@@ -11,40 +11,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("task1/customer")
+@RequestMapping("task1/")
 public class CustomerController
 {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("/add")
+    @PostMapping("customer")
     public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto)
     {
         CustomerDto customer = this.customerService.createCustomer(customerDto);
         return new ResponseEntity<>(customer, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{customerId}")
-    public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto,@PathVariable int customerId)
+    @PutMapping("customer/{customerId}")
+    public void updateCustomer(@RequestBody CustomerDto customerDto,@PathVariable int customerId)
     {
-        CustomerDto customer = this.customerService.updateCustomer(customerDto,customerId);
-        return new ResponseEntity<>(customer,HttpStatus.OK);
+       this.customerService.updateCustomer(customerDto,customerId);
     }
 
-    @DeleteMapping("/delete/{customerId}")
-    public ResponseEntity<ApiResponse> deleteCustomer(@PathVariable int customerId)
+    @DeleteMapping("customer/{customerId}")
+    public void deleteCustomer(@PathVariable int customerId)
     {
         this.customerService.deleteCustomerById(customerId);
-        return new ResponseEntity<>(new ApiResponse("Customer Deleted Successfully",true),HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("customers")
     public ResponseEntity<List<CustomerDto>> getAllCustomers()
     {
         return new ResponseEntity<>(this.customerService.getAllCustomers(), HttpStatus.OK);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("customer/{customerId}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable int customerId)
     {
         CustomerDto customerDto = this.customerService.getCustomerById(customerId);

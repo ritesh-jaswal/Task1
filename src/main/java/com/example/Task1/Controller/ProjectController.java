@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("task1")
+@RequestMapping("task1/")
 public class ProjectController
 {
     @Autowired
     ProjectService projectService;
-    @PostMapping("/customer/{customerId}/employee/{employeeId}/project/add")
+    @PostMapping("customer/{customerId}/employee/{employeeId}/project")
     public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectDto projectDto,
                                                     @PathVariable int customerId,
                                                     @PathVariable int employeeId)
@@ -25,28 +25,26 @@ public class ProjectController
         return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
 
-    @PutMapping("/project/update/{projectId}")
-    public ResponseEntity<ProjectDto> updateProject(@RequestBody ProjectDto projectDto,
+    @PutMapping("project/{projectId}")
+    public void updateProject(@RequestBody ProjectDto projectDto,
                                                     @PathVariable int projectId)
     {
-        ProjectDto project = this.projectService.updateProject(projectDto,projectId);
-        return new ResponseEntity<>(project,HttpStatus.OK);
+        this.projectService.updateProject(projectDto,projectId);
     }
 
-    @DeleteMapping("/project/delete/{projectId}")
-    public ResponseEntity<ApiResponse> deleteProject(@PathVariable int projectId)
+    @DeleteMapping("project/{projectId}")
+    public void deleteProject(@PathVariable int projectId)
     {
         this.projectService.deleteProjectById(projectId);
-        return new ResponseEntity<>(new ApiResponse("Project Deleted Successfully",true),HttpStatus.OK);
     }
 
-    @GetMapping("/project")
+    @GetMapping("projects")
     public ResponseEntity<List<ProjectDto>> getAllProjects()
     {
         return new ResponseEntity<>(this.projectService.getAllProjects(),HttpStatus.OK);
     }
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping("project/{projectId}")
     public ResponseEntity<ProjectDto> getProjectById(@PathVariable int projectId)
     {
         ProjectDto project = this.projectService.getProjectById(projectId);
